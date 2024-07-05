@@ -1,0 +1,405 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="css/style.css">
+    <link href="https://site-assets.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
+  <meta name="description" content="">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify.min.js"></script>
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:image:alt" content="">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+
+<div id="nav-window" class="window hidden">
+
+  <div class="w-dialog">
+
+    <div class="nav-head">
+      <h2>Navigate</h2>
+      <i onclick="toggle_navigation()" class="fas fa-xmark"></i>
+    </div>
+    <div class="navs" id="nav-box">
+
+
+
+    </div>
+
+  </div>
+
+</div>
+
+<div id="selected-box" class="selected-box hidden">
+  <input id="selected-checkbox" class="selected-checkbox" type="checkbox">
+  <span id="selected-count" class="selected-count">12</span>
+</div>
+
+<div id="row-selected-box" class="selected-box hidden">
+  <input id="row-selected-checkbox" class="selected-checkbox" type="checkbox">
+  <span id="row-selected-count" class="selected-count">12</span>
+</div>
+
+<div class="toolbar" id="toolbar">
+  <div class="dropdown">
+    <input class="dropdown-input" id="fontsize_input" oninput="set_fontsize(this.value)" placeholder="Font Size"/>
+    <i class="fas fa-caret-down icon" onclick="toggle_dropdown(this.parentElement)"></i>
+    <div class="dropdown-content">
+      <div onclick="set_fontsize(this.innerText)" class="dropdown-item">32px</div>
+      <div onclick="set_fontsize(this.innerText)" class="dropdown-item">64px</div>
+      <div onclick="set_fontsize(this.innerText)" class="dropdown-item">128px</div>
+    </div>
+  </div>
+  <div class="v-div"></div>
+  <div class="dropdown">
+    <p class="dropdown-input">Font Color</p>
+    <i class="fas fa-caret-down icon" onclick="toggle_dropdown(this.parentElement)"></i>
+    <div class="dropdown-content color-dropdown">
+      <label for="color-picker">Choose a color:</label>
+      <div class="color-container">
+        <input type="color" oninput="set_fontcolor(this.value)" id="color-picker" name="color-picker" value="#ffffff">
+      </div>
+      <div class="flex-h">
+
+        <label for="highlight-color-picker">Choose a highlight color:
+        </label>
+        <div onclick="clear_Highlight()" class="btn custom-btn">
+          <i class="fas fa-ban"></i>
+        </div>
+      </div>
+      <div class="color-container">
+        <input type="color" oninput="set_highlightcolor(this.value)" id="highlight-color-picker" name="color-picker" value="#ffffff">
+      </div>
+    </div>
+  </div>
+  <div class="v-div"></div>
+  <div title="Background Color" class="color-container">
+    <input type="color" oninput="set_bgcolor(this.value)" id="bg-color-picker" name="color-picker" value="#ffffff">
+  </div>
+  <div class="v-div"></div>
+  <div id="bold-btn" onclick="set_bold()" class="btn">
+    <i class="fas fa-bold"></i>
+  </div>
+  <div id="italic-btn" onclick="set_italic()" class="btn">
+    <i class="fas fa-italic"></i>
+  </div>
+  <div id="underline-btn" onclick="set_underline()" class="btn">
+    <i class="fas fa-underline"></i>
+  </div>
+  <div class="v-div"></div>
+  <div id="h-left-btn" onclick="set_align('left')" class="btn">
+    <i class="fas fa-align-left"></i>
+  </div>
+  <div id="h-center-btn" onclick="set_align('center')" class="btn">
+    <i class="fas fa-align-center"></i>
+  </div>
+  <div id="h-right-btn" onclick="set_align('right')" class="btn">
+    <i class="fas fa-align-right"></i>
+  </div>
+  <div class="v-div"></div>
+  <div id="v-start-btn" onclick="set_content('start')" title="Vertically Top" class="btn">
+    <i class="fas fa-objects-align-top"></i>
+  </div>
+  <div id="v-center-btn" onclick="set_content('center')" title="Vertically center" class="btn">
+    <i class="fas fa-objects-align-center-vertical"></i>
+  </div>
+  <div id="v-bottom-btn" onclick="set_content('end')" title="Vertically Bottom" class="btn">
+    <i class="fas fa-objects-align-bottom"></i>
+  </div>
+  <div class="v-div"></div>
+  <div onclick="setUnorderedList()" class="btn">
+    <i class="fas fa-list-ul"></i>
+  </div>
+  <div onclick="setOrderedList()" class="btn">
+    <i class="fas fa-list-ol"></i>
+  </div>
+  <div class="v-div"></div>
+  <div onclick="set_link()" class="btn">
+    <i class="fas fa-link"></i>
+  </div>
+  <div class="v-div"></div>
+  <div onclick="set_para()" id="p-btn" class="btn">
+    <i class="fas fa-paragraph"></i>
+  </div>
+  <div onclick="set_h1()" id="h1-btn" class="btn">
+    <i class="fas fa-h1"></i>
+  </div>
+  <div onclick="set_h2()" id="h2-btn" class="btn">
+    <i class="fas fa-h2"></i>
+  </div>
+  <div onclick="set_h3()" id="h3-btn" class="btn">
+    <i class="fas fa-h3"></i>
+  </div>
+  <div onclick="set_h4()" id="h4-btn" class="btn">
+    <i class="fas fa-h4"></i>
+  </div>
+  <div class="v-div"></div>
+  <div title="Navigate" onclick="toggle_navigation();load_navigation()" id="nav-btn" class="btn">
+    <i class="fas fa-list-tree"></i>
+  </div>
+  <div class="v-div"></div>
+  <div onclick="undo()" class="btn">
+    <i class="fas fa-undo"></i>
+  </div>
+  <div onclick="redo()" class="btn">
+    <i class="fas fa-redo"></i>
+  </div>
+  <div class="v-div"></div>
+  <div onclick="toggle_preview();load_preview()" class="btn">
+    <i class="fas fa-eye"></i>
+  </div>
+
+</div>
+
+<div id="prev-window" class="window hidden">
+
+  <div class="w-dialog full">
+
+    <div class="nav-head">
+      <div class="property">
+        <div class="property">
+          <label for="span-column">View Width: </label>
+          <input oninput="set_view_width(this.value)" id="view-width" value="100%" placeholder="View Width" >
+        </div>
+      </div>
+      <i onclick="toggle_preview()" class="fas fa-xmark"></i>
+    </div>
+    <div class="preview">
+  <iframe  id="prev-box">
+
+  </iframe>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+  <div id="link-container" class="link-container">
+    <input oninput="set_linkText(this.value)" placeholder="Text">
+    <input oninput="set_linkURL(this.value)" placeholder="URL">
+
+  </div>
+  <div style="display: flex; margin-top: 60px;height: 90vh">
+    <div class="editor">
+      <div class="post-content">
+        <table id="posttable" width="800" border="1">
+          <tbody class="post-table">
+
+          </tbody>
+        </table>
+        <div style="margin-top: 20px" onclick="add_row()" class="add-btn">
+          <i class="fas fa-plus"></i>
+        </div>
+      </div>
+    </div>
+
+    <div id="property-box" class="side-bar">
+      <div class="property very-long-prop">
+        <h2>Properties</h2>
+        <div onclick="toggle_propertyBox()" title="Minimise" class="btn">
+          <i class="fas fa-minus"></i>
+        </div>
+      </div>
+      <div class="property-container">
+
+        <span id="column-type" class="property-title">Column</span>
+
+        <div class="property very-long-prop">
+          <label for="span-column">Column Span: </label>
+          <input oninput="set_Colspan(this.value)" id="span-column" value="1" type="number" placeholder="Skip Column" >
+        </div>
+        <div class="property very-long-prop">
+          <label for="span-row">Row Span: </label>
+          <input oninput="set_Rowspan(this.value)" id="span-row" value="1" type="number" placeholder="Skip Row">
+        </div>
+        <div class="property">
+          <label for="add-column">Add Column(s): </label>
+          <input oninput="set_recursive('c',this.value)" id="add-column" value="1" type="number" placeholder="No. of Column">
+        </div>
+
+        <div class="property long-prop">
+          <div onclick="add_col_l_recurse()" title="Add to left" class="btn">
+            <i class="fas fa-angle-left"></i>
+          </div>
+          <div onclick="add_col()" title="Add to end" style="font-size: 5px" class="btn">
+            <i class="fas fa-circle"></i>
+          </div>
+          <div onclick="add_col_r_recurse()" title="Add to right" class="btn">
+            <i class="fas fa-angle-right"></i>
+          </div>
+        </div>
+
+        <div class="property">
+          <label for="column-width">Column Width: </label>
+          <input oninput="set_col_width(this.value)" id="column-width"  placeholder="Width">
+        </div>
+
+        <div class="property long-prop">
+          <label>Move Column: </label>
+          <div onclick="move_col_left()" title="Move left" class="btn">
+            <i class="fas fa-angle-left"></i>
+          </div>
+          <div onclick="move_col_right()" title="Move right" class="btn">
+            <i class="fas fa-angle-right"></i>
+          </div>
+        </div>
+        <div class="property">
+          <label id="delete-col-type">Delete Column: </label>
+          <div onclick="delete_col()" title="Delete Column" class="btn red">
+            <i class="fas fa-trash"></i>
+          </div>
+        </div>
+
+      </div>
+      <div class="property-container">
+
+        <span id="row-type" class="property-title">Row</span>
+
+        <div class="property">
+          <label for="add-row">Add Row(s): </label>
+          <input oninput="set_recursive('r',this.value)" id="add-row" value="1" type="number" placeholder="No. of Row">
+        </div>
+
+        <div class="property long-prop">
+          <div onclick="add_row_t_recursive()" title="Add Above" class="btn">
+            <i class="fas fa-angle-up"></i>
+          </div>
+          <div onclick="add_row_recursive()" title="Add to end" style="font-size: 5px" class="btn">
+            <i class="fas fa-circle"></i>
+          </div>
+          <div onclick="add_row_b_recursive()" title="Add Below" class="btn">
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </div>
+
+        <div class="property">
+          <label for="row-height">Row Height: </label>
+          <input id="row-height" oninput="set_row_height(this.value)" placeholder="Height">
+        </div>
+
+        <div class="property long-prop">
+          <label>Move Row: </label>
+          <div onclick="move_row_a()" title="Move Above" class="btn">
+            <i class="fas fa-angle-up"></i>
+          </div>
+          <div onclick="move_row_b()" title="Move Below" class="btn">
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </div>
+
+
+
+
+        <div class="property">
+          <label>Copy Row: </label>
+          <div onclick="copy_row()" title="Copy Row" class="btn">
+            <i class="fas fa-copy"></i>
+          </div>
+        </div>
+        <div class="property long-prop">
+          <label>Paste Row: </label>
+
+          <div onclick="paste_row_a()" title="Add Above" class="btn">
+            <i class="fas fa-angle-up"></i>
+          </div>
+          <div onclick="paste_row()" title="Add to end" style="font-size: 5px" class="btn">
+            <i class="fas fa-circle"></i>
+          </div>
+          <div onclick="paste_row_b()" title="Add Below" class="btn">
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </div>
+        <div class="property">
+          <label id="delete-row-type">Delete Row: </label>
+          <div onclick="delete_row()" title="Delete Row" class="btn red">
+            <i class="fas fa-trash"></i>
+          </div>
+        </div>
+
+      </div>
+      <div class="property-container">
+
+        <span class="property-title">Border</span>
+
+        <div class="property long-prop">
+          <label for="set-border-dropdown">Border: </label>
+          <div id="set-border-dropdown" class="dropdown">
+            <p class="dropdown-input" id="border-side">All</p>
+            <i class="fas fa-caret-down icon" onclick="toggle_dropdown(this.parentElement)"></i>
+            <div class="dropdown-content">
+              <div onclick="set_border_side(this.innerText);toggle_dropdown(this.parentElement.parentElement)" class="dropdown-item">All</div>
+              <div onclick="set_border_side(this.innerText);toggle_dropdown(this.parentElement.parentElement)" class="dropdown-item">Top</div>
+              <div onclick="set_border_side(this.innerText);toggle_dropdown(this.parentElement.parentElement)" class="dropdown-item">Right</div>
+              <div onclick="set_border_side(this.innerText);toggle_dropdown(this.parentElement.parentElement)" class="dropdown-item">Bottom</div>
+              <div onclick="set_border_side(this.innerText);toggle_dropdown(this.parentElement.parentElement)" class="dropdown-item">Left</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="property long-prop">
+          <div onclick="add_border()" title="Add Border" class="btn">
+            <i class="fas fa-plus"></i>
+          </div>
+          <div onclick="rem_border()" title="Remove Border" class="btn">
+            <i class="fas fa-minus"></i>
+          </div>
+        </div>
+
+        <div class="property">
+          <div onclick="fix_border()" style="width: 60px" class="btn">Fix</div>
+        </div>
+
+      </div>
+      <div class="property-container">
+        <div class="property very-long-prop">
+          <label for="line-height">Line Height:  </label>
+          <input oninput="set_height(this.value)" id="line-height" placeholder="Line Height">
+        </div>
+        <div class="property very-long-prop">
+          <label for="padding">Padding:  </label>
+          <input oninput="set_padding(this.value)" id="padding" placeholder="Padding">
+        </div>
+      </div>
+      <div class="property-container">
+        <span class="property-title">Table</span>
+        <div class="property long-prop">
+          <div onclick="load_table()" style="width: 60px" class="btn">
+            Load
+          </div>
+          <div onclick="save_table()" style="width: 60px" class="btn">
+            Save
+          </div>
+          <div onclick="copy_table()" style="width: 60px" class="btn">
+            Copy
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
